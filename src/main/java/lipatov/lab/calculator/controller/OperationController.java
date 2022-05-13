@@ -1,0 +1,22 @@
+package lipatov.lab.calculator.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import lipatov.lab.calculator.service.OperationService;
+
+@RestController
+public class OperationController {
+    private final OperationService operationService;
+
+    public OperationController(OperationService operationService) {
+        this.operationService = operationService;
+    }
+
+    @GetMapping("/")
+    public int calculate(@RequestParam(value = "typeOperation", defaultValue = "plus") String typeOperation,
+                         @RequestParam(value = "num1", defaultValue = "15") int num1,
+                         @RequestParam(value = "num2", defaultValue = "5") int num2) {
+        return operationService.calculate(typeOperation, num1, num2);
+    }
+}
