@@ -1,5 +1,6 @@
 package lipatov.lab.familyBudget.model;
 
+import javax.validation.constraints.NotBlank;
 import javax.persistence.*;
 import java.util.Objects;
 import java.sql.Date;
@@ -11,6 +12,7 @@ public class Expense {
     private Long id;
     private Date transactionDate;
     private int amount;
+    @NotBlank(message = "Comment can't be null or empty")
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)

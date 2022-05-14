@@ -1,67 +1,63 @@
 package lipatov.lab.familyBudget.service;
 
+import lipatov.lab.familyBudget.repository.FamilyMemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lipatov.lab.familyBudget.model.FamilyMember;
-import javax.persistence.EntityNotFoundException;
+import lipatov.lab.util.validation.ValidatorUtil;
 import org.springframework.stereotype.Service;
-import javax.persistence.PersistenceContext;
-import org.springframework.util.StringUtils;
-import javax.persistence.EntityManager;
+import java.util.Optional;
 import java.util.List;
 import java.sql.Date;
 
 @Service
 public class FamilyMemberService {
-    @PersistenceContext
-    private EntityManager em;
+    private final FamilyMemberRepository familyMemberRepository;
+    private final ValidatorUtil validatorUtil;
+
+    public FamilyMemberService(FamilyMemberRepository familyMemberRepository, ValidatorUtil validatorUtil) {
+        this.familyMemberRepository = familyMemberRepository;
+        this.validatorUtil = validatorUtil;
+    }
 
     @Transactional
     public FamilyMember addFamilyMember(String firstName, String lastName, String patronymic, String gender, Date birthday) {
-        if (!StringUtils.hasText(firstName) || !StringUtils.hasText(lastName) || !StringUtils.hasText(patronymic) || !StringUtils.hasText(gender) || birthday == null) {
-            throw new IllegalArgumentException("One or more parameters are entered incorrectly");
-        }
         final FamilyMember familyMember = new FamilyMember(firstName, lastName, patronymic, gender, birthday);
-        em.persist(familyMember);
-        return familyMember;
+        validatorUtil.validate(familyMember);
+        return familyMemberRepository.save(familyMember);
     }
 
     @Transactional(readOnly = true)
     public FamilyMember findFamilyMember(Long id) {
-        final FamilyMember familyMember = em.find(FamilyMember.class, id);
-        if (familyMember == null) {
-            throw new EntityNotFoundException(String.format("Family member with id [%s] is not found", id));
-        }
-        return familyMember;
+        final Optional<FamilyMember> familyMember = familyMemberRepository.findById(id);
+        return familyMember.orElseThrow(() -> new FamilyMemberNotFoundException(id));
     }
 
     @Transactional(readOnly = true)
     public List<FamilyMember> findAllFamilyMembers() {
-        return em.createQuery("select s from FamilyMember s", FamilyMember.class).getResultList();
+        return familyMemberRepository.findAll();
     }
 
     @Transactional
     public FamilyMember updateFamilyMember(Long id, String firstName, String lastName, String patronymic, String gender, Date birthday) {
-        if (!StringUtils.hasText(firstName) || !StringUtils.hasText(lastName) || !StringUtils.hasText(patronymic) || !StringUtils.hasText(gender) || birthday == null) {
-            throw new IllegalArgumentException("One or more parameters are entered incorrectly");
-        }
         final FamilyMember currentFamilyMember = findFamilyMember(id);
         currentFamilyMember.setFirstName(firstName);
         currentFamilyMember.setLastName(lastName);
         currentFamilyMember.setPatronymic(patronymic);
         currentFamilyMember.setGender(gender);
         currentFamilyMember.setBirthday(birthday);
-        return em.merge(currentFamilyMember);
+        validatorUtil.validate(currentFamilyMember);
+        return familyMemberRepository.save(currentFamilyMember);
     }
 
     @Transactional
     public FamilyMember deleteFamilyMember(Long id) {
         final FamilyMember familyMember = findFamilyMember(id);
-        em.remove(familyMember);
+        familyMemberRepository.delete(familyMember);
         return familyMember;
     }
 
     @Transactional
     public void deleteAllFamilyMembers() {
-        em.createQuery("delete from FamilyMember").executeUpdate();
+        familyMemberRepository.deleteAll();
     }
 }
