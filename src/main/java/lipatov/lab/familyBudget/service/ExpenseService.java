@@ -1,19 +1,14 @@
 package lipatov.lab.familyBudget.service;
 
-import lipatov.lab.familyBudget.repository.ExpenseRepository;
 import lipatov.lab.familyBudget.repository.FamilyMemberRepository;
-import lipatov.lab.util.validation.ValidatorUtil;
 import org.springframework.transaction.annotation.Transactional;
-import lipatov.lab.familyBudget.model.FamilyMember;
-import javax.persistence.EntityNotFoundException;
+import lipatov.lab.familyBudget.repository.ExpenseRepository;
+import lipatov.lab.util.validation.ValidatorUtil;
 import org.springframework.stereotype.Service;
 import lipatov.lab.familyBudget.model.Expense;
-import javax.persistence.PersistenceContext;
-import org.springframework.util.StringUtils;
-import javax.persistence.EntityManager;
+import java.util.Optional;
 import java.util.List;
 import java.sql.Date;
-import java.util.Optional;
 
 @Service
 public class ExpenseService {
