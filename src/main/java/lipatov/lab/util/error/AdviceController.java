@@ -6,12 +6,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import lipatov.lab.familyBudget.service.ExpenseNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import lipatov.lab.util.validation.ValidationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@ControllerAdvice(annotations = RestController.class)
 public class AdviceController {
     @ExceptionHandler({
             FamilyMemberNotFoundException.class,

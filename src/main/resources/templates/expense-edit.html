@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
+
+<body>
+<div class="container" layout:fragment="content">
+    <div th:if="${errors}" th:text="${errors}" class="margin-bottom alert alert-danger"></div>
+
+    <form action="#" th:action="@{/expense/edit/{id}(id=${id})}" th:object="${expenseDto}" method="post">
+        <div class="mb-3">
+            <label for="transactionDate" class="form-label">Дата транзакции</label>
+            <input type="date" class="form-control" id="transactionDate" th:field="${expenseDto.transactionDate}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="amount" class="form-label">Сумма</label>
+            <input type="number" class="form-control" id="amount" th:field="${expenseDto.amount}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="comment" class="form-label">Комментарий</label>
+            <input type="text" class="form-control" id="comment" th:field="${expenseDto.comment}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="familyMemberId" class="form-label">ID Члена семьи</label>
+            <input type="number" class="form-control" id="familyMemberId" th:field="${expenseDto.familyMemberId}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary button-fixed">
+                <span th:if="${id == null}">Добавить</span>
+                <span th:if="${id != null}">Обновить</span>
+            </button>
+
+            <a class="btn btn-secondary button-fixed" href="/expense">Назад</a>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>
