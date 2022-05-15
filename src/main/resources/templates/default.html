@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <meta charset="UTF-8" />
@@ -24,15 +24,17 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" th:with="activeLink=${#request.requestURI}">
+            <ul class="navbar-nav" th:with="activeLink=${#request.requestURI}" sec:authorize="isAuthenticated()">
                 <a class="nav-link" href="/" th:classappend="${#strings.equals(activeLink, '/')} ? 'active' : ''">Главная</a>
                 <a class="nav-link" href="/calculator" th:classappend="${#strings.equals(activeLink, '/calculator')} ? 'active' : ''">Калькулятор</a>
                 <a class="nav-link" href="/familymember" th:classappend="${#strings.equals(activeLink, '/familymember')} ? 'active' : ''">Член семьи</a>
                 <a class="nav-link" href="/expense" th:classappend="${#strings.equals(activeLink, '/expense')} ? 'active' : ''">Расходы</a>
                 <a class="nav-link" href="/test" th:classappend="${#strings.equals(activeLink, '/test')} ? 'active' : ''">Пример Test</a>
                 <a class="nav-link" href="/rest-test" th:classappend="${#strings.equals(activeLink, '/rest-test')} ? 'active' : ''">Пример запроса к REST API</a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" href="/users" th:classappend="${#strings.equals(activeLink, '/users')} ? 'active' : ''">Пользователи</a>
                 <a class="nav-link" href="/swagger-ui/index.html" target="_blank">REST API</a>
                 <a class="nav-link" href="/h2-console/" target="_blank">Консоль H2</a>
+                <a class="nav-link" href="/logout">Выход (<span th:text="${#authentication.name}"></span>)</a>
             </ul>
         </div>
     </div>

@@ -1,4 +1,4 @@
-package lipatov.lab;
+package lipatov.lab.configuration;
 
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,6 +13,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         WebMvcConfigurer.super.addViewControllers(registry);
         registry.addViewController("rest-test");
+        registry.addViewController("login");
     }
 
     @Override
