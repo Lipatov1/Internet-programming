@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import lipatov.lab.test.model.TestDto;
-import lipatov.lab.WebConfiguration;
+import lipatov.lab.configuration.WebConfiguration;
 import javax.validation.Valid;
 
 @RestController

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import lipatov.lab.calculator.service.OperationService;
-import lipatov.lab.WebConfiguration;
+import lipatov.lab.configuration.WebConfiguration;
 
 @RestController
 @RequestMapping(WebConfiguration.REST_API + "/calculator")
