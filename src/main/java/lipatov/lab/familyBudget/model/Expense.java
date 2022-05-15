@@ -19,7 +19,6 @@ public class Expense {
     @JoinColumn(name = "family_member_id")
     private FamilyMember familyMember;
 
-
     public Expense() {
     }
 

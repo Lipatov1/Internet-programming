@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>IP</title>
+    <title>IP Lipatov</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg">
     <script type="text/javascript" src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
-            <i class="fa-solid fa-font-awesome"></i> IP
+            <i class="fa-solid fa-font-awesome"></i> IP Lipatov
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,11 +26,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" th:with="activeLink=${#request.requestURI}">
                 <a class="nav-link" href="/" th:classappend="${#strings.equals(activeLink, '/')} ? 'active' : ''">Главная</a>
-                <a class="nav-link" href="/speaker" th:classappend="${#strings.equals(activeLink, '/speaker')} ? 'active' : ''">Пример Speaker</a>
+                <a class="nav-link" href="/calculator" th:classappend="${#strings.equals(activeLink, '/calculator')} ? 'active' : ''">Калькулятор</a>
+                <a class="nav-link" href="/familymember" th:classappend="${#strings.equals(activeLink, '/familymember')} ? 'active' : ''">Член семьи</a>
+                <a class="nav-link" href="/expense" th:classappend="${#strings.equals(activeLink, '/expense')} ? 'active' : ''">Расходы</a>
                 <a class="nav-link" href="/test" th:classappend="${#strings.equals(activeLink, '/test')} ? 'active' : ''">Пример Test</a>
-                <a class="nav-link" href="/student" th:classappend="${#strings.equals(activeLink, '/student')} ? 'active' : ''">Пример Student</a>
                 <a class="nav-link" href="/rest-test" th:classappend="${#strings.equals(activeLink, '/rest-test')} ? 'active' : ''">Пример запроса к REST API</a>
-                <a class="nav-link" href="/swagger-ui/index.html" target="_blank">Документация REST API</a>
+                <a class="nav-link" href="/swagger-ui/index.html" target="_blank">REST API</a>
                 <a class="nav-link" href="/h2-console/" target="_blank">Консоль H2</a>
             </ul>
         </div>

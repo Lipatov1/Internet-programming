@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
+
+<body>
+<div class="container" layout:fragment="content">
+    <div>
+        <a class="btn btn-success button-fixed" href="/expense/edit/">
+            <i class="fa-solid fa-plus"></i> Добавить
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ID</th>
+                <th scope="col">Дата транзакции</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Комменатрий</th>
+                <th scope="col">ID Члена семьи</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="expense, iterator: ${expenses}">
+                <th scope="row" th:text="${iterator.index} + 1"></th>
+                <td th:text="${expense.id}"></td>
+                <td th:text="${expense.transactionDate}"></td>
+                <td th:text="${expense.amount}"></td>
+                <td th:text="${expense.comment}"></td>
+                <td th:text="${expense.getFamilyMemberId()}"></td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a class="btn btn-warning button-fixed button-sm"
+                           th:href="@{/expense/edit/{id}(id=${expense.id})}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Изменить
+                        </a>
+
+                        <button type="button" class="btn btn-danger button-fixed button-sm" th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${expense.id}').click()|">
+                            <i class="fa fa-trash" aria-hidden="true"></i> Удалить
+                        </button>
+                    </div>
+
+                    <form th:action="@{/expense/delete/{id}(id=${expense.id})}" method="post">
+                        <button th:id="'remove-' + ${expense.id}" type="submit" style="display: none"> Удалить </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>

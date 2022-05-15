@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
+
+<body>
+<div class="container" layout:fragment="content">
+    <div th:if="${errors}" th:text="${errors}" class="margin-bottom alert alert-danger"></div>
+
+    <form action="#" th:action="@{/familymember/edit/{id}(id=${id})}" th:object="${familymemberDto}" method="post">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="firstName" th:field="${familymemberDto.firstName}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Фамилия</label>
+            <input type="text" class="form-control" id="lastName" th:field="${familymemberDto.lastName}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="patronymic" class="form-label">Фамилия</label>
+            <input type="text" class="form-control" id="patronymic" th:field="${familymemberDto.patronymic}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="gender" class="form-label">Пол</label>
+            <input type="text" class="form-control" id="gender" th:field="${familymemberDto.gender}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="birthday" class="form-label">Дата рождения</label>
+            <input type="date" class="form-control" id="birthday" th:field="${familymemberDto.birthday}" required="true">
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary button-fixed">
+                <span th:if="${id == null}">Добавить</span>
+                <span th:if="${id != null}">Обновить</span>
+            </button>
+            <a class="btn btn-secondary button-fixed" href="/familymember">Назад</a>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

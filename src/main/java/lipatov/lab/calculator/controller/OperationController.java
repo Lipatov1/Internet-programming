@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import lipatov.lab.calculator.service.OperationService;
 import lipatov.lab.WebConfiguration;
 
-@RequestMapping(WebConfiguration.REST_API + "/calculator")
 @RestController
+@RequestMapping(WebConfiguration.REST_API + "/calculator")
 public class OperationController {
     private final OperationService operationService;
 

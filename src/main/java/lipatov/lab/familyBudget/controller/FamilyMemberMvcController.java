@@ -41,7 +41,7 @@ public class FamilyMemberMvcController {
         return "familymember-edit";
     }
 
-    @PostMapping(value = {"", "/{id}"})
+    @PostMapping(value = {"/edit", "/edit/{id}"})
     public String saveFamilyMember(@PathVariable(required = false) Long id,
                                    @ModelAttribute @Valid FamilyMemberDto familyMemberDto,
                                    BindingResult bindingResult,

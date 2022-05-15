@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/familymember")
+@RequestMapping("/expense")
 public class ExpenseMvcController {
     private final ExpenseService expenseService;
 
@@ -41,7 +41,7 @@ public class ExpenseMvcController {
         return "expense-edit";
     }
 
-    @PostMapping(value = {"", "/{id}"})
+    @PostMapping(value = {"/edit", "/edit/{id}"})
     public String saveExpense(@PathVariable(required = false) Long id,
                               @ModelAttribute @Valid ExpenseDto expenseDto,
                               BindingResult bindingResult,
