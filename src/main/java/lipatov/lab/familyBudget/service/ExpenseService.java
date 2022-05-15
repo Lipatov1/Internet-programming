@@ -1,67 +1,65 @@
 package lipatov.lab.familyBudget.service;
 
+import lipatov.lab.familyBudget.repository.FamilyMemberRepository;
 import org.springframework.transaction.annotation.Transactional;
-import lipatov.lab.familyBudget.model.FamilyMember;
-import javax.persistence.EntityNotFoundException;
+import lipatov.lab.familyBudget.repository.ExpenseRepository;
+import lipatov.lab.util.validation.ValidatorUtil;
 import org.springframework.stereotype.Service;
 import lipatov.lab.familyBudget.model.Expense;
-import javax.persistence.PersistenceContext;
-import org.springframework.util.StringUtils;
-import javax.persistence.EntityManager;
+import java.util.Optional;
 import java.util.List;
 import java.sql.Date;
 
 @Service
 public class ExpenseService {
-    @PersistenceContext
-    private EntityManager em;
+    private final ExpenseRepository expenseRepository;
+    private final FamilyMemberRepository familyMemberRepository;
+    private final ValidatorUtil validatorUtil;
+
+    public ExpenseService(ExpenseRepository expenseRepository, FamilyMemberRepository familyMemberRepository, ValidatorUtil validatorUtil) {
+        this.familyMemberRepository = familyMemberRepository;
+        this.expenseRepository = expenseRepository;
+        this.validatorUtil = validatorUtil;
+    }
 
     @Transactional
     public Expense addExpense(Date transactionDate, int amount, String comment, Long familyMemberId) {
-        if (transactionDate == null || amount <= 0 || !StringUtils.hasText(comment) || em.find(FamilyMember.class, familyMemberId) == null) {
-            throw new IllegalArgumentException("One or more parameters are entered incorrectly");
-        }
-        final Expense expense = new Expense(transactionDate, amount, comment, em.find(FamilyMember.class, familyMemberId));
-        em.persist(expense);
-        return expense;
+        final Expense expense = new Expense(transactionDate, amount, comment, familyMemberRepository.findById(familyMemberId).get());
+        validatorUtil.validate(expense);
+        return expenseRepository.save(expense);
     }
 
     @Transactional(readOnly = true)
     public Expense findExpense(Long id) {
-        final Expense expense = em.find(Expense.class, id);
-        if (expense == null) {
-            throw new EntityNotFoundException(String.format("Expense with id [%s] is not found", id));
-        }
-        return expense;
+        final Optional<Expense> expense = expenseRepository.findById(id);
+        return expense.orElseThrow(() -> new ExpenseNotFoundException(id));
     }
 
     @Transactional(readOnly = true)
     public List<Expense> findAllExpenses() {
-        return em.createQuery("select s from Expense s", Expense.class).getResultList();
+        return expenseRepository.findAll();
     }
 
     @Transactional
     public Expense updateExpense(Long id, Date transactionDate, int amount, String comment, Long familyMemberId) {
-        if (transactionDate == null || amount <= 0 || !StringUtils.hasText(comment) || em.find(FamilyMember.class, familyMemberId) == null) {
-            throw new IllegalArgumentException("One or more parameters are entered incorrectly");
-        }
         final Expense currentExpense = findExpense(id);
         currentExpense.setTransactionDate(transactionDate);
         currentExpense.setAmount(amount);
         currentExpense.setComment(comment);
-        currentExpense.setFamilyMember(em.find(FamilyMember.class, familyMemberId));
-        return em.merge(currentExpense);
+        currentExpense.setFamilyMember(familyMemberRepository.findById(familyMemberId).get());
+        validatorUtil.validate(currentExpense);
+        return expenseRepository.save(currentExpense);
     }
 
     @Transactional
     public Expense deleteExpense(Long id) {
         final Expense expense = findExpense(id);
-        em.remove(expense);
+        expenseRepository.delete(expense);
         return expense;
     }
 
     @Transactional
     public void deleteAllExpenses() {
-        em.createQuery("delete from Expense").executeUpdate();
+        expenseRepository.deleteAll();
     }
 }

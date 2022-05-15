@@ -1,5 +1,6 @@
 package lipatov.lab.familyBudget.model;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,9 +12,13 @@ public class FamilyMember {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Firstname can't be null or empty")
     private String firstName;
+    @NotBlank(message = "Lastname can't be null or empty")
     private String lastName;
+    @NotBlank(message = "Patronymic can't be null or empty")
     private String patronymic;
+    @NotBlank(message = "Gender can't be null or empty")
     private String gender;
     private Date birthday;
 

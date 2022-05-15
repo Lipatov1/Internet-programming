@@ -1,11 +1,12 @@
 package lipatov.lab;
 
+import lipatov.lab.familyBudget.service.FamilyMemberNotFoundException;
+import lipatov.lab.familyBudget.service.ExpenseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import lipatov.lab.familyBudget.service.FamilyMemberService;
 import org.springframework.boot.test.context.SpringBootTest;
 import lipatov.lab.familyBudget.service.ExpenseService;
 import lipatov.lab.familyBudget.model.FamilyMember;
-import javax.persistence.EntityNotFoundException;
 import lipatov.lab.familyBudget.model.Expense;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ public class FamilyBudgetTests {
     @Test
     void testFamilyMemberReadNotFound() {
         familyMemberService.deleteAllFamilyMembers();
-        Assertions.assertThrows(EntityNotFoundException.class, () -> familyMemberService.findFamilyMember(-1L));
+        Assertions.assertThrows(FamilyMemberNotFoundException.class, () -> familyMemberService.findFamilyMember(-1L));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class FamilyBudgetTests {
     @Test
     void testExpenseReadNotFound() {
         expenseService.deleteAllExpenses();
-        Assertions.assertThrows(EntityNotFoundException.class, () -> expenseService.findExpense(-1L));
+        Assertions.assertThrows(ExpenseNotFoundException.class, () -> expenseService.findExpense(-1L));
     }
 
     @Test
