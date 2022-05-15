@@ -4,16 +4,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import lipatov.lab.familyBudget.service.FamilyMemberService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import lipatov.lab.WebConfiguration;
+import javax.validation.Valid;
 import java.util.List;
-import java.sql.Date;
 
 @RestController
-@RequestMapping("/familymember")
+@RequestMapping(WebConfiguration.REST_API + "/familymember")
 public class FamilyMemberController {
     private final FamilyMemberService familyMemberService;
 
@@ -26,30 +27,22 @@ public class FamilyMemberController {
         return new FamilyMemberDto(familyMemberService.findFamilyMember(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<FamilyMemberDto> getFamilyMembers() {
         return familyMemberService.findAllFamilyMembers().stream()
                 .map(FamilyMemberDto::new)
                 .toList();
     }
 
-    @PostMapping("/")
-    public FamilyMemberDto createFamilyMember(@RequestParam("firstName") String firstName,
-                                              @RequestParam("lastName") String lastName,
-                                              @RequestParam("patronymic") String patronymic,
-                                              @RequestParam("gender") String gender,
-                                              @RequestParam("birthday") Date birthday) {
-        return new FamilyMemberDto(familyMemberService.addFamilyMember(firstName, lastName, patronymic, gender, birthday));
+    @PostMapping
+    public FamilyMemberDto createFamilyMember(@RequestBody @Valid FamilyMemberDto familyMemberDto) {
+        return new FamilyMemberDto(familyMemberService.addFamilyMember(familyMemberDto.getFirstName(), familyMemberDto.getLastName(), familyMemberDto.getPatronymic(), familyMemberDto.getGender(), familyMemberDto.getBirthday()));
     }
 
     @PutMapping("/{id}")
     public FamilyMemberDto updateFamilyMember(@PathVariable Long id,
-                                              @RequestParam("firstName") String firstName,
-                                              @RequestParam("lastName") String lastName,
-                                              @RequestParam("patronymic") String patronymic,
-                                              @RequestParam("gender") String gender,
-                                              @RequestParam("birthday") Date birthday) {
-        return new FamilyMemberDto(familyMemberService.updateFamilyMember(id, firstName, lastName, patronymic, gender, birthday));
+                                              @RequestBody @Valid FamilyMemberDto familyMemberDto) {
+        return new FamilyMemberDto(familyMemberService.updateFamilyMember(id, familyMemberDto.getFirstName(), familyMemberDto.getLastName(), familyMemberDto.getPatronymic(), familyMemberDto.getGender(), familyMemberDto.getBirthday()));
     }
 
     @DeleteMapping("/{id}")
